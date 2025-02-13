@@ -5,7 +5,6 @@
       max-width="900"
       @mousemove="handleMouseMove"
     >
-    <RippleButton></RippleButton>
       <div class="title">
         <h1 class="title-letter">K</h1>
         <h1 class="title-letter">a</h1>
