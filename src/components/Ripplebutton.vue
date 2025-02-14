@@ -13,9 +13,8 @@
 
 .btn-ripple {
   cursor: pointer ;
-  color: black !important;
-  background-color: #ffffff !important;
-  transition: all 0.1s;
+  color: black ;
+  background-color: #ffffff;
   overflow: hidden;
   display: flex;
   text-align: center;
@@ -25,25 +24,23 @@
   font-weight: 500;
   height: 2em;
   border-radius: 0;
-  padding: 12px 24px;
+  padding: 1em 1em 1em 1em;
+  transition: all 0.1s;
 }
 
 .btn-ripple:active {
-  transform: scale(0.95);
+  transform: scale(0.90);
 }
 
 .btn-ripple:after {
   content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: relative;
+  right: 30%;
   width: .2em;
   height: .2em;
-  background-color: #a0a0a0;
-  opacity: 0;
   border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
+  background-color: #a19e9e;
+  opacity: 0;
 }
 
 @keyframes ripple {
@@ -51,8 +48,8 @@
     transform: scale(0, 0);
     opacity: 0.5;
   }
-  20% {
-    transform: scale(40, 50);
+  50% {
+    transform: scale(50, 50);
     opacity: 0.5;
   }
   100% {

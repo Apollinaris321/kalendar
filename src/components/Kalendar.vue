@@ -17,17 +17,19 @@
       </div>
 
       <div class="dateSelectionContainer">
-        <div class="dateSelection">
-          <div>Start:</div>
-          <CustomDropdown :options='years' default="2000" @input="selectYear"/>
-          <CustomDropdown :options='months' default="January" @input="selectMonth"/>
-          <CustomDropdown :options='days' default="1" @input="selectDay"/>
-        </div>
-        <div class="dateSelection">
-          <div>End:</div>
-          <CustomDropdown :options='years' default="2080" @input="selectEndYear"/>
-          <CustomDropdown :options='months' default="January" @input="selectEndMonth"/>
-          <CustomDropdown :options='endDays' default="1" @input="selectEndDay"/>
+        <div>
+          <div class="dateSelection">
+            <div class="dateRowName">Start:</div>
+            <CustomDropdown :options='years' default="2000" @input="selectYear"/>
+            <CustomDropdown :options='months' default="January" @input="selectMonth"/>
+            <CustomDropdown :options='days' default="1" @input="selectDay"/>
+          </div>
+          <div class="dateSelection">
+            <div class="dateRowName">End:</div>
+            <CustomDropdown :options='years' default="2080" @input="selectEndYear"/>
+            <CustomDropdown :options='months' default="January" @input="selectEndMonth"/>
+            <CustomDropdown :options='endDays' default="1" @input="selectEndDay"/>
+          </div>
         </div>
         <div class="buttonPosition">
           <RippleButton @click="acceptBirthday" />
@@ -40,7 +42,7 @@
       <div class="maincard d-flex justify-center align-center mx-auto">
         <div v-for="(dot, index) in dots" :key="index">
           <div
-            :class="[dot.value === 1 ? 'outlineCircle' : 'circle', 'circle-'+index]"
+            :class="[dot.value === 1 ? 'outlineCircle' : 'circle', 'circle-'+index, {'even-index': dot.tick > 0}]"
             :id="'circle-'+index"
             :style="{ transform: 'scale(' + dot.scale + ')' }"
           />
@@ -109,7 +111,7 @@ for(let i=1900;i<2100;i++){
 let mouseX = 0
 let mouseY = 0
 
-let radius = 80
+let radius = 40
 
 let ticking = false;
 
@@ -132,9 +134,9 @@ function acceptBirthday(){
   dots.value = []
   for(let i=0;i<diff;i++){
     if(i < diffNow){
-      dots.value.push({value: 1, scale: 1})
+      dots.value.push({value: 1, scale: 1, tick: 0})
     }else{
-      dots.value.push({value: 2, scale: 1})
+      dots.value.push({value: 2, scale: 1, tick: 0})
     }
   }
   dots.value.reverse()
@@ -227,10 +229,16 @@ function calcCircles(event) {
     const dx = mouseX - pos.x;
     const dy = mouseY - pos.y;
     let result = Math.sqrt(dx * dx + dy * dy);
+    if(result < radius / 4){
+      dots.value[i].tick = 10
+    }
     if(result < radius){
       dots.value[i].scale = 2 - (result / radius);
     }else{
       dots.value[i].scale = 1
+      if(dots.value[i].tick > 0){
+        dots.value[i].tick -= 1
+      }
     }
   }
 }
@@ -294,6 +302,51 @@ onMounted(() => {
   width: 7px;
   background-color: white;
   border-radius: 50%;
+  position: relative;
+}
+
+.outlineCircle.even-index::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 9px; /* Adjust the width as needed */
+  height: 1px; /* Adjust the height as needed */
+  background-color: white;
+  transform: translateY(-50%);
+}
+
+.outlineCircle.even-index::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px; /* Adjust the width as needed */
+  height: 9px; /* Adjust the height as needed */
+  background-color: white;
+  transform: translateX(-50%);
+}
+
+.circle.even-index::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 9px; /* Adjust the width as needed */
+  height: 1px; /* Adjust the height as needed */
+  background-color: white;
+  transform: translateY(-50%);
+}
+
+.circle.even-index::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px; /* Adjust the width as needed */
+  height: 9px; /* Adjust the height as needed */
+  background-color: white;
+  transform: translateX(-50%);
 }
 
 .circle.hovered {
@@ -339,6 +392,12 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   padding-bottom: .5em;
+  padding-top: .5em;
+}
+
+.dateRowName{
+  width: 3em;
+  text-align: end;
 }
 
 /*

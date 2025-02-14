@@ -4,7 +4,12 @@
       <div>
       {{ selected }}
       </div>
-      <v-icon icon="mdi-triangle" :class="['arrow-icon', {'rotate': isRotate}]" size="x-small" style="font-size: .8em; color:black;" />
+      <v-icon
+        icon="mdi-triangle"
+        :class="['arrow-icon', {'custom-rotate' : isRotate, 'custom-rotate-close': !isRotate }]"
+        size="x-small"
+        :style="{fontSize: '.8em', color: 'black',}"
+      />
     </div>
     <div id="items" class="items" :class="{ selectHide: !open }">
       <div
@@ -81,12 +86,31 @@ export default {
 <style scoped>
 
 .arrow-icon {
-  transition: transform 0.3s ease;
-  transform-origin: center;
+  transform:rotate(0deg);
 }
 
-.arrow-icon.rotate {
-  transform: rotate(180deg);
+.custom-rotate-close{
+  animation: rotateclose 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotateclose {
+  0% {transform: rotate(180deg);}
+  10% {transform: rotate(200deg);}
+  20% {transform: rotate(180deg);}
+  90% {transform: rotate(-10deg);}
+  100% {transform: rotate(0deg);}
+}
+
+.custom-rotate{
+  animation: rotate 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotate {
+  0% {transform: rotate(0deg);}
+  90% {transform: rotate(190deg);}
+  100% {transform: rotate(180deg);}
 }
 
 ::-webkit-scrollbar
