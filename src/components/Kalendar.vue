@@ -36,7 +36,10 @@
         </div>
       </div>
       <div>
-        <Test></Test>
+        <div class="progressbarpercentage">
+          <ProgressPercentage></ProgressPercentage>
+        </div>
+        <Progressbar></Progressbar>
       </div>
 
       <div class="maincard d-flex justify-center align-center mx-auto">
@@ -59,7 +62,8 @@ import gsap from 'gsap';
 import CustomDropdown from './CustomDropdown.vue';
 import RippleButton from './Ripplebutton.vue';
 import EventBus from '@/EventBus';
-import Test from './Progressbar.vue';
+import Progressbar from './Progressbar.vue';
+import ProgressPercentage from './ProgressPercentage.vue';
 
 const months = ref([
   'January',
@@ -111,7 +115,7 @@ for(let i=1900;i<2100;i++){
 let mouseX = 0
 let mouseY = 0
 
-let radius = 40
+let radius = 60
 
 let ticking = false;
 
@@ -229,11 +233,9 @@ function calcCircles(event) {
     const dx = mouseX - pos.x;
     const dy = mouseY - pos.y;
     let result = Math.sqrt(dx * dx + dy * dy);
-    if(result < radius / 4){
-      dots.value[i].tick = 10
-    }
     if(result < radius){
       dots.value[i].scale = 2 - (result / radius);
+      dots.value[i].tick = 10
     }else{
       dots.value[i].scale = 1
       if(dots.value[i].tick > 0){
@@ -359,6 +361,8 @@ onMounted(() => {
   width: 7px;     /* Optional: Add margin for spacing */
   border-radius: 50%; /* Makes the div a circle */
   border: 1px white solid;
+  position: relative;
+  transform-origin: center;
 }
 
 .acceptBtn{
@@ -400,10 +404,16 @@ onMounted(() => {
   text-align: end;
 }
 
+.progressbarpercentage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: opacity(1) 1s ease;
+}
+
 /*
 TODO
 tage im Jahr
-eingabe ausbessern
 prozent übrig
 */
 </style>
